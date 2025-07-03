@@ -1,0 +1,1 @@
+from app.bot.commands.start_command import start
