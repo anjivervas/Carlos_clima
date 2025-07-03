@@ -3,10 +3,13 @@ from typing import Optional
 from bs4 import BeautifulSoup
 
 from app.settings import Config
+from app.app_log import get_logger
+
+logger = get_logger(f"{Config().APP_NAME} - Scraper Module")
 
 class ClimaScrap():
     """Clase del objeto scraper para scrapear el clima del día"""
-    
+
     def __init__(self):
         self.url = Config().URL_BASE
         self.soup = self._get_soup()
@@ -18,18 +21,23 @@ class ClimaScrap():
             response.raise_for_status()
             return BeautifulSoup(response.text, "html.parser")
         except requests.RequestException as e:
-            print(f"[Scraper] Error al obtener la página del clima: {e}")
+            logger.error(f"Error al obtener la página del clima: {e}")
             return None
 
     def _get_card(self) -> Optional[BeautifulSoup]:
         """Busca el card con la información del clima en un objeto de BeautifulSoup"""
 
-        card = self.soup.find(
-            "div", 
-            {"class": "CurrentConditions--body--r20G9"}
-        )
+        try:
+            card = self.soup.find(
+                "div", 
+                {"class": "CurrentConditions--body--r20G9"}
+            )
+            logger.debug(f"Obteniendo card de la sopa")
 
-        return card
+            return card
+        except Exception as e:
+            logger.error(f"Error al obtener el card en la página: {e}")
+            return None
 
     def get_temperature_average(self) -> Optional[str]:
         """Obtiene la temperatura promedio"""
