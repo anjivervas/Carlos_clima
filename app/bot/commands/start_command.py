@@ -12,10 +12,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 Puedo proporcionarte la predicción para tu signo zodiacal del día de hoy. ¿Qué signo eres?
 
-    • random: /aries
-    • random: /tauro
-    • random: /geminis
-
+    • Conoce cómo estará el clima hoy: /clima
+    • Conoce cómo estará tu temperatura: /temperatura
 
 ¡Usa alguno de estos comandos para obtener la predicción del día!
     """
