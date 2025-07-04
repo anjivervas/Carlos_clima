@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from app.settings import Config
 from app.app_log import get_logger
 
-logger = get_logger(f"{Config().APP_NAME} - Scraper Module")
+logger = get_logger(f"[{Config().APP_NAME} - Scraper Module]")
 
 class ClimaScrap():
     """Clase del objeto scraper para scrapear el clima del día"""
@@ -41,36 +41,45 @@ class ClimaScrap():
 
     def get_temperature_average(self) -> Optional[str]:
         """Obtiene la temperatura promedio"""
-        card = self._get_card()
-        temperatura_promedio = card.find("span", {"class": "CurrentConditions--tempValue--zUBSz"})
 
-        return temperatura_promedio.text
+        try:
+            card = self._get_card()
+            temperatura_promedio = card.find("span", {"class": "CurrentConditions--tempValue--zUBSz"})
+            logger.debug(f"Obteniendo temperatura promedio de la sopa")
+            return temperatura_promedio.text
+        except Exception as e:
+            logger.error(f"Error al obtener la temperatura promedio: {e}")
+            return None
 
     def clima_del_dia(self) -> Optional[str]:
         """Obtiene la previsión del clima del día"""
-        card = self._get_card()
-        clima = card.find("div", {"class": "CurrentConditions--phraseValue---VS-k"})
-
-        return clima.text
+        try:
+            card = self._get_card()
+            clima = card.find("div", {"class": "CurrentConditions--phraseValue---VS-k"})
+            logger.debug(f"Obteniendo clima del día de la sopa")
+            return clima.text
+        except Exception as e:
+            logger.error(f"Error al obtener el clima del día: {e}")
+            return None
 
     def obtener_temperatura_en_el_dia(self) -> Optional[str]:
         """Obtiene la temperatura promedio"""
-        card = self._get_card()
-        temperatura_promedio = card.find("div", {"class": "CurrentConditions--tempHiLoValue--Og9IG"})
-
-        return temperatura_promedio.text
+        try:
+            card = self._get_card()
+            temperatura_promedio = card.find("div", {"class": "CurrentConditions--tempHiLoValue--Og9IG"})
+            logger.debug(f"Obteniendo temperatura promedio del día de la sopa")
+            return temperatura_promedio.text
+        except Exception as e:
+            logger.error(f"Error al obtener la temperatura promedio del día: {e}")
+            return None
 
     def obtener_temperatura_en_el_noche(self) -> Optional[str]:
         """Obtiene la temperatura promedio"""
-        card = self._get_card()
-        temperatura_promedio = card.find("span", {"data-testid": "TemperatureValue"})
-
-        return temperatura_promedio.text
-
-"""
-sopa = get_soup(Config().URL_BASE)
-card = get_card(sopa)
-clima = clima_del_dia(card)
-print(clima)
-temperatura_dia = obtener_temperatura_en_el_noche(card)
-"""
+        try:
+            card = self._get_card()
+            temperatura_promedio = card.find("span", {"data-testid": "TemperatureValue"})
+            logger.debug(f"Obteniendo temperatura promedio de la noche de la sopa")
+            return temperatura_promedio.text
+        except Exception as e:
+            logger.error(f"Error al obtener la temperatura promedio de la noche: {e}")
+            return None
