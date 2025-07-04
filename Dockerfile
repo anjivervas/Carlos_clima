@@ -27,7 +27,7 @@ RUN pip install --upgrade pip && \
     pip install -r requirements.txt --no-cache-dir
 
 # 4. Copia el código
-COPY src/ ./src/
+COPY app/ ./app/
 COPY run.py .
 
 # 5. Cambia al usuario no-root
